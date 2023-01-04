@@ -5,7 +5,7 @@ let nominalSchema = mongoose.Schema({
     type: String,
     required: [true, "Nama koin harus diisi"],
   },
-  CoinQuantity: {
+  coinQuantity: {
     type: Number,
     default: 0,
   },

@@ -13,7 +13,7 @@
       <tr>
         <td><%= i + 1 %></td>
         <td><%= nominal[i].coinName %></td>
-        <td><%= nominal[i].CoinQuantity %></td>
+        <td><%= nominal[i].coinQuantity %></td>
         <td><%= nominal[i].price %></td>
         <td>
           <form action="/nominal/delete/<%= nominal[i]._id %>?_method=DELETE" method="post">
