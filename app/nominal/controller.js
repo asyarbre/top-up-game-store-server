@@ -22,7 +22,7 @@ module.exports = {
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/nominal");
     }
   },
 
