@@ -44,41 +44,41 @@ module.exports = {
     }
   },
 
-  // viewEdit: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
+  viewEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
 
-  //     const nominal = await Nominal.findOne({ _id: id });
-  //     res.render("admin/nominal/edit", { nominal });
-  //   } catch (err) {
-  //     req.flash("alertMessage", `${err.message}`);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/nominal");
-  //   }
-  // },
+      const bank = await Bank.findOne({ _id: id });
+      res.render("admin/bank/edit", { bank });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/bank");
+    }
+  },
 
-  // actionEdit: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { coinName, coinQuantity, price } = req.body;
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, nameBank, noRekening } = req.body;
 
-  //     await Nominal.findOneAndUpdate(
-  //       {
-  //         _id: id,
-  //       },
-  //       { coinName, coinQuantity, price }
-  //     );
+      await Bank.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        { name, nameBank, noRekening }
+      );
 
-  //     req.flash("alertMessage", "Berhasil Ubah Nominal");
-  //     req.flash("alertStatus", "success");
+      req.flash("alertMessage", "Berhasil Ubah bank");
+      req.flash("alertStatus", "success");
 
-  //     res.redirect("/nominal");
-  //   } catch (err) {
-  //     req.flash("alertMessage", `${err.message}`);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/nominal");
-  //   }
-  // },
+      res.redirect("/bank");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/bank");
+    }
+  },
 
   // actionDelete: async (req, res) => {
   //   try {
