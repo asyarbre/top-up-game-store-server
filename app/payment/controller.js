@@ -48,41 +48,43 @@ module.exports = {
     }
   },
 
-  // viewEdit: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
+  viewEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
 
-  //     const bank = await Bank.findOne({ _id: id });
-  //     res.render("admin/bank/edit", { bank });
-  //   } catch (err) {
-  //     req.flash("alertMessage", `${err.message}`);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/bank");
-  //   }
-  // },
+      const payment = await Payment.findOne({ _id: id }).populate("banks");
+      const banks = await Bank.find();
 
-  // actionEdit: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
-  //     const { name, nameBank, noRekening } = req.body;
+      res.render("admin/payment/edit", { payment, banks });
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 
-  //     await Bank.findOneAndUpdate(
-  //       {
-  //         _id: id,
-  //       },
-  //       { name, nameBank, noRekening }
-  //     );
+  actionEdit: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { type, banks } = req.body;
 
-  //     req.flash("alertMessage", "Berhasil Ubah bank");
-  //     req.flash("alertStatus", "success");
+      await Payment.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        { type, banks }
+      );
 
-  //     res.redirect("/bank");
-  //   } catch (err) {
-  //     req.flash("alertMessage", `${err.message}`);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/bank");
-  //   }
-  // },
+      req.flash("alertMessage", "Berhasil Ubah payment");
+      req.flash("alertStatus", "success");
+
+      res.redirect("/payment");
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 
   // actionDelete: async (req, res) => {
   //   try {
