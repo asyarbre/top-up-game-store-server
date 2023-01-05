@@ -86,23 +86,23 @@ module.exports = {
     }
   },
 
-  // actionDelete: async (req, res) => {
-  //   try {
-  //     const { id } = req.params;
+  actionDelete: async (req, res) => {
+    try {
+      const { id } = req.params;
 
-  //     await Bank.findOneAndRemove({
-  //       _id: id,
-  //     });
+      await Payment.findOneAndRemove({
+        _id: id,
+      });
 
-  //     req.flash("alertMessage", "Berhasil Hapus bank");
-  //     req.flash("alertStatus", "success");
+      req.flash("alertMessage", "Berhasil Hapus payment");
+      req.flash("alertStatus", "success");
 
-  //     res.redirect("/bank");
+      res.redirect("/payment");
 
-  //   } catch (err) {
-  //     req.flash("alertMessage", `${err.message}`);
-  //     req.flash("alertStatus", "danger");
-  //     res.redirect("/bank");
-  //   }
-  // },
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/payment");
+    }
+  },
 };
