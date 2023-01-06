@@ -1,3 +1,6 @@
+const User = require("./model");
+const bcrypt = require("bcryptjs");
+
 module.exports = {
   viewSignin: async (req, res) => {
     try {
@@ -9,7 +12,39 @@ module.exports = {
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/users");
+      res.redirect("/");
+    }
+  },
+
+  actionSignin: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const check = await User.findOne({ email: email });
+
+      if (check) {
+        if (check.status === "Y") {
+          const checkPassword = await bcrypt.compare(password, check.password);
+          if (checkPassword) {
+            res.redirect("/dashboard");
+          } else {
+            req.flash("alertMessage", "Password yang anda inputkan salah");
+            req.flash("alertStatus", "danger");
+            res.redirect("/");
+          }
+        } else {
+          req.flash("alertMessage", "Akun anda tidak aktif");
+          req.flash("alertStatus", "danger");
+          res.redirect("/");
+        }
+      } else {
+        req.flash("alertMessage", "Email yang ada inputkan tidak terdaftar");
+        req.flash("alertStatus", "danger");
+        res.redirect("/");
+      }
+    } catch (err) {
+      req.flash("alertMessage", `${err.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect("/");
     }
   },
 };
