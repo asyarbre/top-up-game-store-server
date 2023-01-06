@@ -6,9 +6,14 @@ module.exports = {
     try {
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
-      const alert = { message: alertMessage, status: alertStatus };
 
-      res.render("admin/users/view_signin", { alert });
+      const alert = { message: alertMessage, status: alertStatus };
+      if (req.session.user === null || req.session.user === undefined) {
+        res.render("admin/users/view_signin", { alert });
+      }else {
+        res.redirect("/dashboard");
+      }
+
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
@@ -25,6 +30,12 @@ module.exports = {
         if (check.status === "Y") {
           const checkPassword = await bcrypt.compare(password, check.password);
           if (checkPassword) {
+            req.session.user = {
+              id: check.id,
+              email: check.email,
+              status: check.status,
+              name: check.name
+            }
             res.redirect("/dashboard");
           } else {
             req.flash("alertMessage", "Password yang anda inputkan salah");
