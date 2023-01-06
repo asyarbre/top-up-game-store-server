@@ -17,7 +17,12 @@ module.exports = {
         .populate("nominals");
       console.log("Voucher >>");
       console.log(voucher);
-      res.render("admin/voucher/view_voucher", { voucher, alert });
+      res.render("admin/voucher/view_voucher", {
+        voucher,
+        alert,
+        name: req.session.user.name,
+        title: "Voucher",
+      });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
@@ -32,6 +37,8 @@ module.exports = {
       res.render("admin/voucher/create", {
         category,
         nominal,
+        name: req.session.user.name,
+        title: "Tambah Voucher",
       });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
@@ -112,7 +119,13 @@ module.exports = {
         .populate("category")
         .populate("nominals");
 
-      res.render("admin/voucher/edit", { category, nominal, voucher });
+      res.render("admin/voucher/edit", {
+        category,
+        nominal,
+        voucher,
+        name: req.session.user.name,
+        title: "Edit Voucher",
+      });
     } catch (err) {
       req.flash("alertMessage", `${err.message}`);
       req.flash("alertStatus", "danger");
@@ -217,16 +230,19 @@ module.exports = {
     }
   },
 
-  actionStatus : async (req, res) => {
+  actionStatus: async (req, res) => {
     try {
       const { id } = req.params;
       let voucher = await Voucher.findOne({ _id: id });
-      
+
       let status = voucher.status === "Y" ? "N" : "Y";
 
-      voucher = await Voucher.findOneAndUpdate({
-        _id: id
-      }, {status})
+      voucher = await Voucher.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        { status }
+      );
       req.flash("alertMessage", "Berhasil Ubah status voucher");
       req.flash("alertStatus", "success");
 
@@ -236,5 +252,5 @@ module.exports = {
       req.flash("alertStatus", "danger");
       res.redirect("/voucher");
     }
-  }
+  },
 };
