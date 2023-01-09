@@ -51,9 +51,19 @@
         <td><%= transaction[i]?.player?.name ?? '-' %></td>
         
         <td>
-          <form action="/transaction/delete/<%= transaction[i]._id %>?_method=DELETE" method="post" style="display: inline-block;">
-            <a href="/transaction/edit/<%= transaction[i]._id %>" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt mr-1 "></i>Ubah</a>
-            <button class="btn btn-danger btn-sm"><i class="fas fa-trash mr-1"></i>Hapus</button>
+          <form action="/transaction/status/<%= transaction[i]._id %>?status=failed&_method=PUT" method="post" style="display: inline-block;">
+            <button class="btn btn-danger btn-sm">
+              <i class="fas fa-times-circle">
+                Tolak
+              </i>
+            </button>
+          </form>
+          <form action="/transaction/status/<%= transaction[i]._id %>?status=success&_method=PUT" method="post" style="display: inline-block;">
+            <button class="btn btn-success btn-sm">
+              <i class="fas fa-check">
+                Terima
+              </i>
+            </button>
           </form>
         </td>
       </tr>
